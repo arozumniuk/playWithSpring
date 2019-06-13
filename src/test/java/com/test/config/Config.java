@@ -1,17 +1,6 @@
 package com.test.config;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rits.cloning.Cloner;
-import io.restassured.RestAssured;
-import io.restassured.builder.RequestSpecBuilder;
-import io.restassured.config.ObjectMapperConfig;
-import io.restassured.config.RestAssuredConfig;
-import io.restassured.filter.log.RequestLoggingFilter;
-import io.restassured.filter.log.ResponseLoggingFilter;
-import io.restassured.http.ContentType;
-import io.restassured.specification.RequestSpecification;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -21,7 +10,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.annotation.Scope;
 
 import java.util.concurrent.TimeUnit;
 
@@ -34,43 +22,8 @@ public class Config {
     @Value("${url}")
     private String url;
 
-    @Value("${activeSpringProfile:LOCAL}")
-    private String activeSpringProfile;
-
     @Value("${browser}")
     private String browser;
-
-
-    @Bean
-    public ObjectMapper getObjectMapper() {
-        return new ObjectMapper()
-                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-                .setSerializationInclusion(JsonInclude.Include.NON_NULL);
-    }
-
-    @Bean
-    public Cloner getCloner() {
-        return new Cloner();
-    }
-
-    @Bean(name = "apiTester")
-    public RequestSpecification getRequestSpecification() {
-        RequestSpecBuilder builder = new RequestSpecBuilder();
-
-        RestAssured.config = new RestAssuredConfig().objectMapperConfig(
-                new ObjectMapperConfig().jackson2ObjectMapperFactory(
-                        (type, s) -> getObjectMapper()
-                ));
-
-        builder
-                .setContentType(ContentType.JSON)
-                .setBaseUri(url)
-                .setRelaxedHTTPSValidation()
-                .addFilter(new RequestLoggingFilter())
-                .addFilter(new ResponseLoggingFilter());
-
-        return builder.build();
-    }
 
     @Bean()
     public WebDriver getDriver() {
