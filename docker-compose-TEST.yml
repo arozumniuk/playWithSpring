@@ -1,0 +1,22 @@
+version: '3.6'
+
+services:
+  sidecar:
+    image: 249030517958.dkr.ecr.us-west-2.amazonaws.com/gfc-auth-sidecar:release-1.3
+    environment:
+      ALLOW_CHARON_PASSTHRU: "true"
+      CHARON_PROFILE_ENDPOINT: "/me"
+      CHARON_URL: "https://secure.rmntest.com/accounts/api"
+      CHARON_SECRET: "giftcard_services_sidecar:ELWZAQYFYKPFAVABXBGNENWTXJ"
+      CREDENTIAL_HOST_PAIRS: "giftcards-orderservice=https://orders.giftcards.rmntest.com,ico-orderservice=https://orders.giftcards.rmntest.com,ledger-ico=https://ico.giftcards.rmntest.com,ico-merchant=https://merchants.giftcards.rmntest.com"
+      SECRET_PAIRS: "giftcards-orderservice=VU055OK3qcLXRL1FK7,ico-orderservice=CUy9D%m#J5wQJFmgLdA4I3x^bMEz11o7AWdk^8D$ojZ9j^aBnu95Y@h5q#s&!eTF,ledger-ico=9anrEZ0rxBNuVPszJoDnS8bioHkvizT7tHR14V50Wrz18GgGDLCUUhaOjgM2,ico-merchant=iqddLIgiYbeDcKA5tVTiLNC7RVMPTEsxSVlpT76IW4uEaSBFAEi7mEnGXm41RkAT"
+      DISABLE_CHARON: "false"
+      DISABLE_HMAC: "false"
+      LOG_LEVEL: "debug"
+      JWT_AUDIENCE_DOMAIN: "rmntest.com"
+      REQUIRE_JWT_TYPE: "jwts"
+      VERIFY_DESTINATION_ADDRESS: "http://localhost:8086"
+      HEALTHCHECK_ADDRESS: "http://localhost:8086/ws/api/swagger.json"
+    ports:
+      - 5000:80 # Reverse Proxy (Validates)
+      - 5001:1080 # Forward Proxy (Signs)

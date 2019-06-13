@@ -1,0 +1,27 @@
+import lombok.Data;
+
+@Data
+public class {{classname}} {{#parent}}extends {{{parent}}} {{/parent}}{{#parcelableModel}}implements Parcelable {{#serializableModel}}, Serializable {{/serializableModel}}{{/parcelableModel}}{{^parcelableModel}}{{#serializableModel}}implements Serializable {{/serializableModel}}{{/parcelableModel}}{
+
+{{#vars}}
+    {{#isContainer}}
+        private {{{datatypeWithEnum}}} {{name}};
+    {{/isContainer}}
+    {{^isContainer}}
+        private {{{datatypeWithEnum}}} {{name}};
+    {{/isContainer}}
+    {{#isEnum}}
+
+        {{^isContainer}}
+            {{>modelInnerEnum}}
+        {{/isContainer}}
+    {{/isEnum}}
+    {{#items.isEnum}}
+        {{#items}}
+            {{^isContainer}}
+                {{>modelInnerEnum}}
+            {{/isContainer}}
+        {{/items}}
+    {{/items.isEnum}}
+{{/vars}}
+}
