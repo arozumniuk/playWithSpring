@@ -31,7 +31,7 @@
         <bean-utils-version>1.9.3</bean-utils-version>
         <cloning-version>1.9.10</cloning-version>
 
-        <spring.version>4.3.11.RELEASE</spring.version>
+        <spring.version>5.3.19</spring.version>
         <jackson-antpathfilter.version>${jsr250-api.version}.0</jackson-antpathfilter.version>
         <streamex.version>0.6.8</streamex.version>
         <exec-maven-plugin.version>1.6.0</exec-maven-plugin.version>
